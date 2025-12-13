@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4f46e5">
+    <title>Менеджер паролей</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Более надежный CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer" />
+    <!-- fallback для Font Awesome -->
+    <style>
+        /* Fallback для иконок если Font Awesome не загрузится */
+        .fa, .fas, .far, .fal, .fab {
+            font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif;
+        }
+        
+        /* Гарантируем что иконки будут видимыми */
+        i {
+            font-style: normal;
+        }
+        
+        /* Убедимся что шрифты загружаются корректно */
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-style: normal;
+            font-weight: 900;
+            font-display: block;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/webfonts/fa-solid-900.woff2") format("woff2"),
+                 url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/webfonts/fa-solid-900.ttf") format("truetype");
+        }
+        
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-style: normal;
+            font-weight: 400;
+            font-display: block;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/webfonts/fa-regular-400.woff2") format("woff2"),
+                 url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/webfonts/fa-regular-400.ttf") format("truetype");
+        }
+        
+        @font-face {
+            font-family: 'Font Awesome 6 Brands';
+            font-style: normal;
+            font-weight: 400;
+            font-display: block;
+            src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/webfonts/fa-brands-400.woff2") format("woff2"),
+                 url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/webfonts/fa-brands-400.ttf") format("truetype");
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-lock"></i> Менеджер паролей</h1>
+            <p class="subtitle">Безопасное локальное хранение паролей</p>
+            <div class="install-btn-container">
+                <button id="installButton" class="install-btn">
+                    <i class="fas fa-download"></i> Установить приложение
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="password-generator">
+                <h2><i class="fas fa-key"></i> Генератор паролей</h2>
+                <div class="generator-controls">
+                    <div class="control-group">
+                        <label for="passwordLength">Длина пароля: <span id="lengthValue">12</span></label>
+                        <input type="range" id="passwordLength" min="6" max="32" value="12">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label><input type="checkbox" id="uppercase" checked> <i class="fas fa-text-height"></i> Заглавные буквы (A-Z)</label>
+                        <label><input type="checkbox" id="lowercase" checked> <i class="fas fa-text-height" style="transform: scaleY(0.8);"></i> Строчные буквы (a-z)</label>
+                        <label><input type="checkbox" id="numbers" checked> <i class="fas fa-hashtag"></i> Цифры (0-9)</label>
+                        <label><input type="checkbox" id="symbols" checked> <i class="fas fa-asterisk"></i> Символы (!@#$%^&*)</label>
+                    </div>
+                    
+                    <div class="generator-result">
+                        <input type="text" id="generatedPassword" readonly placeholder="Нажмите 'Сгенерировать'">
+                        <button id="generatePassword" class="btn-primary">
+                            <i class="fas fa-sync-alt"></i> Сгенерировать
+                        </button>
+                        <button id="copyPassword" class="btn-secondary">
+                            <i class="far fa-copy"></i> Копировать
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="add-password">
+                <h2><i class="fas fa-plus-circle"></i> Добавить новый пароль</h2>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="url"><i class="fas fa-globe"></i> URL или название сервиса:</label>
+                        <input type="text" id="url" placeholder="https://example.com или Название сервиса" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> Логин / Email:</label>
+                        <input type="text" id="username" placeholder="username@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-key"></i> Пароль:</label>
+                        <div class="password-input-group">
+                            <input type="password" id="password" placeholder="Введите пароль" required>
+                            <button type="button" id="togglePassword" class="toggle-password" title="Показать/скрыть пароль">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <button type="button" id="useGeneratedPassword" class="btn-small">
+                                <i class="fas fa-magic"></i> Использовать сгенерированный
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes"><i class="far fa-sticky-note"></i> Примечания (опционально):</label>
+                        <textarea id="notes" rows="2" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Сохранить пароль
+                    </button>
+                </form>
+            </div>
+
+            <div class="password-list">
+                <h2><i class="fas fa-list"></i> Сохраненные пароли <span id="passwordCount">(0)</span></h2>
+                <div class="list-controls">
+                    <div class="search-container" style="flex: 1; position: relative;">
+                        <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+                        <input type="text" id="searchInput" placeholder="Поиск по URL или логину..." style="padding-left: 40px;">
+                    </div>
+                    <button id="clearAll" class="btn-danger">
+                        <i class="fas fa-trash-alt"></i> Удалить все
+                    </button>
+                </div>
+                <div id="passwordsContainer" class="passwords-container">
+                    <!-- Пароли будут добавляться здесь динамически -->
+                    <div class="empty-state">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Пока нет сохраненных паролей. Добавьте свой первый пароль!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p><i class="fas fa-info-circle"></i> Данные хранятся локально в вашем браузере. Никакая информация не передается на сервер.</p>
+            <p class="app-version"><i class="fas fa-code-branch"></i> Версия 1.0.0 | PWA Менеджер паролей</p>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для подтверждения удаления -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-exclamation-triangle"></i> Подтверждение удаления</h3>
+            <p>Вы уверены, что хотите удалить все сохраненные пароли? Это действие нельзя отменить.</p>
+            <div class="modal-actions">
+                <button id="confirmDelete" class="btn-danger"><i class="fas fa-trash-alt"></i> Удалить все</button>
+                <button id="cancelDelete" class="btn-secondary"><i class="fas fa-times"></i> Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div id="notification" class="notification"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
