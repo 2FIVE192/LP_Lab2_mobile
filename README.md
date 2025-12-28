@@ -154,8 +154,13 @@ python server_mobile.py
 ✅ Работа в standalone режиме
 
 ### Скриншоты работы
-![alt text](Screenshot_1-1.png)
-![alt text](Screenshot_2-1.png)
-![alt text](Screenshot_3-1.png)
-![alt text](Screenshot_4-1.png)
-![alt text](Screenshot_5-1.png)
+<img width="647" height="499" alt="image" src="https://github.com/user-attachments/assets/cfb6bfc1-6626-4f23-bc6a-dec5a849512d" />
+<img width="1074" height="483" alt="image" src="https://github.com/user-attachments/assets/12dac28d-455f-41b4-a3d7-51d3794720df" />
+<img width="954" height="534" alt="image" src="https://github.com/user-attachments/assets/86b3ff65-b408-4afe-b663-76a820d71ff4" />
+<img width="1388" height="1079" alt="image" src="https://github.com/user-attachments/assets/8fc91bf3-6ade-426b-9cb3-ce11447a747b" />
+<img width="1373" height="800" alt="image" src="https://github.com/user-attachments/assets/fd777923-1254-4d65-8555-db0a533f8320" />
+
+
+
+
+
